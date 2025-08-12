@@ -2,9 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -23,14 +21,16 @@ import {
   FormMessage
 } from '@/components/ui/form'
 
-const FormSchema = z.object({
-  email: z.string().email().min(3).max(100),
-  password: z.string().min(6, 'Password must be at least 6 characters').max(100),
-  confirmPassword: z.string()
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"]
-})
+const FormSchema = z
+  .object({
+    email: z.string().email().min(3).max(100),
+    password: z.string().min(6, 'Password must be at least 6 characters').max(100),
+    confirmPassword: z.string()
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword']
+  })
 
 export function RegisterForm({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
   const [loading, setLoading] = useState(false)
