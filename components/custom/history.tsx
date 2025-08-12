@@ -154,7 +154,7 @@ export const History = ({ user }: { user: User | undefined }) => {
                       asChild
                     >
                       <Link
-                        href={`/${chat.chat_id}`}
+                        href={`/chat/${chat.chat_id}`}
                         className="text-ellipsis overflow-hidden text-left py-2 pl-2 rounded-lg outline-zinc-900"
                       >
                         {getTitleFromChat(chat)}
