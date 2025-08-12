@@ -1,7 +1,8 @@
 import { deleteChat } from '@/lib/chat-store'
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-  const { id } = await params
+export async function DELETE(request: Request) {
+  const { id } = await request.json()
+
   if (!id) {
     return new Response('Chat ID is required', { status: 400 })
   }

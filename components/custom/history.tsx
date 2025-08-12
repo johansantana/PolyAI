@@ -52,7 +52,8 @@ export const History = ({ user }: { user: User | undefined }) => {
   const router = useRouter()
   const handleDelete = async () => {
     const deletePromise = fetch(`/api/chat/${deleteId}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      body: JSON.stringify({ id: deleteId })
     })
 
     toast.promise(deletePromise, {

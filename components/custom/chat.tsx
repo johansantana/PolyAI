@@ -39,7 +39,6 @@ export function Chat({ id, initialMessages }: { id: string; initialMessages: Arr
           {messages.map(message => (
             <PreviewMessage
               key={message.id}
-              chatId={id}
               role={message.role}
               content={message.content}
               attachments={message.experimental_attachments}
