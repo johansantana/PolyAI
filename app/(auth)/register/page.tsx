@@ -1,6 +1,6 @@
 'use client'
 
-import { LoginForm } from '@/components/register-form'
+import { RegisterForm } from '@/components/register-form'
 import Image from 'next/image'
 
 export default function LoginPage() {
@@ -11,7 +11,7 @@ export default function LoginPage() {
           <Image src="/logo.png" alt="PolyAI Logo" width={32} height={32} />
           PolyAI
         </a>
-        <LoginForm />
+        <RegisterForm />
       </div>
     </div>
   )
