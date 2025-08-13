@@ -13,6 +13,7 @@ import { GoogleIcon } from './custom/icons'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { useTranslations } from 'next-intl'
 
 import {
   Form,
@@ -29,6 +30,7 @@ const FormSchema = z.object({
 })
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<'form'>) {
+  const t = useTranslations('LoginPage')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const { signIn, signInWithGoogle } = useAuth()
@@ -46,9 +48,9 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
       setLoading(true)
       await signIn(data.email, data.password)
       router.push('/')
-      toast.success('Logged in successfully!')
+      toast.success(t('loggedInSuccesss'))
     } catch {
-      toast.error('Failed to log in. Please check your credentials.')
+      toast.error(t('failedToLogIn'))
     } finally {
       setLoading(false)
     }
@@ -60,7 +62,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
       await signInWithGoogle()
       router.push('/')
     } catch {
-      toast.error('Failed to sign in with Google.')
+      toast.error(t('failedToSignInWithGoogle'))
     } finally {
       setLoading(false)
     }
@@ -72,10 +74,8 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
       {...(props as React.HTMLAttributes<HTMLDivElement>)}
     >
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">Login to your account</h1>
-        <p className="text-balance text-sm text-muted-foreground">
-          Enter your email below to login to your account
-        </p>
+        <h1 className="text-2xl font-bold">{t('title')}</h1>
+        <p className="text-balance text-sm text-muted-foreground">{t('description')}</p>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="grid gap-6">
@@ -85,7 +85,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('email')}</FormLabel>
                   <FormControl>
                     <Input placeholder="m@example.com" {...field} />
                   </FormControl>
@@ -102,9 +102,9 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="flex justify-between">
-                    <Label htmlFor="password">Password</Label>
+                    <Label htmlFor="password">{t('password')}</Label>
                     <a href="#" className="ml-auto text-sm underline-offset-4 hover:underline">
-                      Forgot your password?
+                      {t('forgotPassword')}
                     </a>
                   </FormLabel>
                   <FormControl>
@@ -116,7 +116,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
             />
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Signing in...' : 'Sign in'}
+            {loading ? t('signingIn') : t('signIn')}
           </Button>
         </form>
       </Form>
@@ -127,12 +127,12 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
       </div>
       <Button variant="outline" className="w-full" onClick={handleSignInWithGoogle}>
         <GoogleIcon />
-        Login with Google
+        {t('loginWithGoogle')}
       </Button>
       <div className="text-center text-sm">
-        Don&apos;t have an account?{' '}
+        {t('noAccount')}{' '}
         <Link href="/register" className="underline underline-offset-4">
-          Sign up
+          {t('signUp')}
         </Link>
       </div>
     </div>

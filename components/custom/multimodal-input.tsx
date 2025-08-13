@@ -11,6 +11,7 @@ import React, {
   SetStateAction,
   ChangeEvent
 } from 'react'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 import { ArrowUpIcon, PaperclipIcon, StopIcon } from './icons'
@@ -24,19 +25,6 @@ type Suggestion = {
   label: string
   action: string
 }
-
-const suggestedActions: Suggestion[] = [
-  {
-    title: 'Can you send me',
-    label: 'an audio of a short story?',
-    action: 'Can you send me an audio of a short story?'
-  },
-  {
-    title: 'Can you investigate',
-    label: 'what is an LLM?',
-    action: 'Can you investigate what is an LLM?'
-  }
-]
 
 export function MultimodalInput({
   input,
@@ -67,6 +55,7 @@ export function MultimodalInput({
     chatRequestOptions?: ChatRequestOptions
   ) => void
 }) {
+  const t = useTranslations('Common')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const { width } = useWindowSize()
 
@@ -75,6 +64,19 @@ export function MultimodalInput({
       adjustHeight()
     }
   }, [])
+
+  const suggestedActions: Suggestion[] = [
+    {
+      title: t('suggestedTitle1'),
+      label: t('suggestedLabel1'),
+      action: t('suggestedAction1')
+    },
+    {
+      title: t('suggestedTitle2'),
+      label: t('suggestedLabel2'),
+      action: t('suggestedAction2')
+    }
+  ]
 
   const adjustHeight = () => {
     if (textareaRef.current) {
@@ -127,7 +129,7 @@ export function MultimodalInput({
         toast.error(error)
       }
     } catch {
-      toast.error('Failed to upload file, please try again!')
+      toast.error(t('failedFileUpload'))
     }
   }
 
@@ -218,7 +220,7 @@ export function MultimodalInput({
 
       <Textarea
         ref={textareaRef}
-        placeholder="Send a message..."
+        placeholder={t('placeholder')}
         value={input}
         onChange={handleInput}
         className="min-h-[24px] overflow-hidden resize-none rounded-lg text-base bg-muted border-none"
@@ -228,7 +230,7 @@ export function MultimodalInput({
             event.preventDefault()
 
             if (isLoading) {
-              toast.error('Please wait for the model to finish its response!')
+              toast.error(t('pleaseWait'))
             } else {
               submitForm()
             }

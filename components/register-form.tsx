@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { toast } from 'sonner'
 import { GoogleIcon } from './custom/icons'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import {
@@ -21,21 +22,22 @@ import {
   FormMessage
 } from '@/components/ui/form'
 
-const FormSchema = z
-  .object({
-    email: z.string().email().min(3).max(100),
-    password: z.string().min(6, 'Password must be at least 6 characters').max(100),
-    confirmPassword: z.string()
-  })
-  .refine(data => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ['confirmPassword']
-  })
-
 export function RegisterForm({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
+  const t = useTranslations('RegisterPage')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const { signUp, signInWithGoogle } = useAuth()
+
+  const FormSchema = z
+    .object({
+      email: z.email().min(3).max(100),
+      password: z.string().min(6, t('passwordMustBe')).max(100),
+      confirmPassword: z.string()
+    })
+    .refine(data => data.password === data.confirmPassword, {
+      message: t('passwordsDontMatch'),
+      path: ['confirmPassword']
+    })
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -50,10 +52,10 @@ export function RegisterForm({ className, ...props }: React.ComponentPropsWithou
     try {
       setLoading(true)
       await signUp(data.email, data.password)
-      toast.success('Registration successful! Please check your email for verification.')
+      toast.success(t('registrationSuccessful'))
       router.push('/login')
     } catch {
-      toast.error('Failed to create account.')
+      toast.error(t('registrationFailed'))
     } finally {
       setLoading(false)
     }
@@ -65,7 +67,7 @@ export function RegisterForm({ className, ...props }: React.ComponentPropsWithou
       await signInWithGoogle()
       router.push('/')
     } catch {
-      toast.error('Failed to sign in with Google.')
+      toast.error(t('failedToSignInWithGoogle'))
     } finally {
       setLoading(false)
     }
@@ -74,10 +76,8 @@ export function RegisterForm({ className, ...props }: React.ComponentPropsWithou
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">Create Account</h1>
-        <p className="text-balance text-sm text-muted-foreground">
-          Enter your details below to create your account
-        </p>
+        <h1 className="text-2xl font-bold">{t('title')}</h1>
+        <p className="text-balance text-sm text-muted-foreground">{t('description')}</p>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="grid gap-6">
@@ -87,7 +87,7 @@ export function RegisterForm({ className, ...props }: React.ComponentPropsWithou
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('email')}</FormLabel>
                   <FormControl>
                     <Input placeholder="m@example.com" {...field} />
                   </FormControl>
@@ -102,7 +102,7 @@ export function RegisterForm({ className, ...props }: React.ComponentPropsWithou
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t('password')}</FormLabel>
                   <FormControl>
                     <Input type="password" {...field} />
                   </FormControl>
@@ -117,7 +117,7 @@ export function RegisterForm({ className, ...props }: React.ComponentPropsWithou
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel>{t('confirmPassword')}</FormLabel>
                   <FormControl>
                     <Input type="password" {...field} />
                   </FormControl>
@@ -127,28 +127,28 @@ export function RegisterForm({ className, ...props }: React.ComponentPropsWithou
             />
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Creating account...' : 'Create account'}
+            {loading ? t('creatingAccount') : t('createAccount')}
           </Button>
         </form>
       </Form>
       <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
         <span className="relative z-10 bg-background px-2 text-muted-foreground">
-          Or continue with
+          {t('orContinueWith')}
         </span>
       </div>
       <Button variant="outline" className="w-full" onClick={handleSignInWithGoogle}>
         <GoogleIcon />
-        Sign Up with Google
+        {t('signUpWithGoogle')}
       </Button>
       <div className="text-center text-sm">
-        Already have an account?{' '}
+        {t('alreadyHaveAccount')}{' '}
         <Link href="/login" className="underline underline-offset-4">
-          Login
+          {t('login')}
         </Link>
       </div>
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a> and{' '}
-        <a href="#">Privacy Policy</a>.
+        {t('termsNotice')} <a href="#">{t('termsOfService')}</a> and{' '}
+        <a href="#">{t('privacyPolicy')}</a>.
       </div>
     </div>
   )

@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { RotateCcw, LoaderCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { PauseIcon, PlayIcon } from './icons'
+import { useTranslations } from 'next-intl'
 
 interface AudioPlayerProps {
   audioUrl?: string
@@ -11,6 +12,7 @@ interface AudioPlayerProps {
 }
 
 export const AudioPlayer = ({ audioUrl, isLoading }: AudioPlayerProps) => {
+  const t = useTranslations('Common')
   const [isPlaying, setIsPlaying] = useState(false)
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
@@ -75,7 +77,7 @@ export const AudioPlayer = ({ audioUrl, isLoading }: AudioPlayerProps) => {
     return (
       <div className="flex items-center gap-1 p-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg max-w-max">
         <LoaderCircle className="animate-spin h-4 w-4" />
-        <span className="text-sm text-zinc-600 dark:text-zinc-400">Generating audio...</span>
+        <span className="text-sm text-zinc-600 dark:text-zinc-400">{t('generatingAudio')}</span>
       </div>
     )
   }

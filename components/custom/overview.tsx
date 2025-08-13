@@ -1,8 +1,10 @@
 import { motion } from 'motion/react'
 import { LanguageIcon } from './icons'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 
 export const Overview = () => {
+  const t = useTranslations('Common')
   return (
     <motion.div
       key="overview"
@@ -17,9 +19,9 @@ export const Overview = () => {
           <LanguageIcon />
         </p>
         <p>
-          Welcome to <code className="rounded-sm bg-muted-foreground/15 px-1.5 py-0.5">PolyAI</code>
-          ! Your multilingual virtual assistant, I&#8217;m here to help with tasks and questions.
-          Start by typing below!
+          {t('welcomeTo')}{' '}
+          <code className="rounded-sm bg-muted-foreground/15 px-1.5 py-0.5">PolyAI</code>!{' '}
+          {t('welcomeMessage')}
         </p>
         <Image
           src="/overview.png"

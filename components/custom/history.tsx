@@ -28,8 +28,10 @@ import {
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '../ui/sheet'
 import { User } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 export const History = ({ user }: { user: User | undefined }) => {
+  const t = useTranslations('History')
   const { id } = useParams()
   const pathname = usePathname()
 
@@ -57,7 +59,7 @@ export const History = ({ user }: { user: User | undefined }) => {
     })
 
     toast.promise(deletePromise, {
-      loading: 'Deleting chat...',
+      loading: t('deletingChat'),
       success: () => {
         mutate((history: Array<Chat> | undefined) => {
           if (history) {
@@ -67,9 +69,9 @@ export const History = ({ user }: { user: User | undefined }) => {
             return history.filter(h => h.chat_id !== id)
           }
         })
-        return 'Chat deleted successfully'
+        return t('chatDeletedSuccess')
       },
-      error: 'Failed to delete chat'
+      error: t('failedToDeleteChat')
     })
 
     setShowDeleteDialog(false)
@@ -95,9 +97,9 @@ export const History = ({ user }: { user: User | undefined }) => {
       >
         <SheetContent side="left" className="p-3 w-80">
           <SheetHeader>
-            <SheetTitle className="text-left">History</SheetTitle>
+            <SheetTitle className="text-left">{t('title')}</SheetTitle>
             <SheetDescription className="text-left">
-              {history === undefined ? 'loading' : history.length} chats
+              {history === undefined ? t('loading') : history.length} chats
             </SheetDescription>
           </SheetHeader>
 
@@ -105,7 +107,7 @@ export const History = ({ user }: { user: User | undefined }) => {
             {user && (
               <Button variant="outline" className="self-start" asChild>
                 <Link href="/">
-                  <PencilEditIcon /> New Chat
+                  <PencilEditIcon /> {t('newChat')}
                 </Link>
               </Button>
             )}
@@ -114,14 +116,14 @@ export const History = ({ user }: { user: User | undefined }) => {
               {!user ? (
                 <div className="text-zinc-10 h-dvh w-full flex flex-row justify-center items-center text-sm gap-2">
                   <InfoIcon />
-                  <div>Login to save and revisit previous chats!</div>
+                  <div>{t('loginToSaveChat')}</div>
                 </div>
               ) : null}
 
               {!isLoading && history?.length === 0 && user ? (
                 <div className="text-zinc-500 h-dvh w-full flex flex-row justify-center items-center text-sm gap-2">
                   <InfoIcon />
-                  <div>No chats found</div>
+                  <div>{t('noChatsFound')}</div>
                 </div>
               ) : null}
 
@@ -181,7 +183,7 @@ export const History = ({ user }: { user: User | undefined }) => {
                             }}
                           >
                             <TrashIcon />
-                            <div>Delete</div>
+                            <div>{t('delete')}</div>
                           </Button>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -196,15 +198,12 @@ export const History = ({ user }: { user: User | undefined }) => {
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your chat and remove it
-              from our servers.
-            </AlertDialogDescription>
+            <AlertDialogTitle>{t('areYouSure')}</AlertDialogTitle>
+            <AlertDialogDescription>{t('actionCannotBeUndone')}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>Continue</AlertDialogAction>
+            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete}>{t('continue')}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

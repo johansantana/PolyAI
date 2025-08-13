@@ -13,6 +13,7 @@ import Link from 'next/link'
 import { ExternalLink } from 'lucide-react'
 import Map, { Marker } from 'react-map-gl/maplibre'
 import { Tooltip, TooltipTrigger, TooltipContent } from '../ui/tooltip'
+import { useTranslations } from 'next-intl'
 
 export const Message = ({
   // Eliminé 'chatId' porque no se estaba usando y ESLint daba warning por eso
@@ -27,6 +28,7 @@ export const Message = ({
   toolInvocations: Array<ToolInvocation> | undefined
   attachments?: Array<Attachment>
 }) => {
+  const t = useTranslations('Common')
   return (
     <motion.div
       className={`flex flex-row gap-4 px-4 w-full md:w-[500px] md:px-0 first-of-type:pt-20`}
@@ -259,7 +261,7 @@ export const Message = ({
                   <div key={toolCallId} className="flex flex-col gap-2">
                     <div className="flex items-center gap-2">
                       <div className="h-[14px] w-[14px] shrink-0 animate-pulse rounded-full bg-muted" />
-                      <span className="text-sm">Searching the web...</span>
+                      <span className="text-sm">{t('searchingTheWeb')}</span>
                     </div>
                     <div className="h-[42px] w-full animate-pulse rounded-lg bg-muted" />
                   </div>
@@ -269,7 +271,7 @@ export const Message = ({
                   <div key={toolCallId} className="flex flex-col gap-2">
                     <div className="flex items-center gap-2">
                       <div className="h-[14px] w-[14px] shrink-0 animate-pulse rounded-full bg-muted" />
-                      <span className="text-sm">Searching places...</span>
+                      <span className="text-sm">{t('searchingPlaces')}</span>
                     </div>
                     <div className="h-[160px] w-full animate-pulse rounded-lg bg-muted" />
                   </div>

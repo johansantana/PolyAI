@@ -1,6 +1,6 @@
 # PolyAI
 
-![Next.js](https://img.shields.io/badge/Next.js-black?style=flat&logo=next.js) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css) ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat&logo=supabase)
+![Next.js](https://img.shields.io/badge/Next.js-black?style=flat&logo=next.js) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css) ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat&logo=supabase) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/YelisPayros/PolyAI)
 
 **PolyAI** is a modern AI chat application built with Next.js, featuring authentication, real-time chat with AI responses, and multimodal capabilities.
 

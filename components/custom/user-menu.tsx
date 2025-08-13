@@ -5,6 +5,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuTrigger
 } from '../ui/dropdown-menu'
 import { useRouter } from 'next/navigation'
@@ -12,18 +13,21 @@ import toast from 'react-hot-toast'
 import { Button } from '../ui/button'
 import { User } from '@supabase/supabase-js'
 import { ThemeToggle } from './theme-toggle'
+import { LanguageToggle } from './language-toggle'
+import { useTranslations } from 'next-intl'
 
 export function UserMenu({ user }: { user: User | undefined }) {
+  const t = useTranslations('UserMenu')
   const { signOut } = useAuth()
   const router = useRouter()
 
   const handleSignOut = async () => {
     try {
       await signOut()
-      toast.success('Logged out successfully!')
+      toast.success(t('loggedOut'))
       router.push('/login')
     } catch {
-      toast.error('Failed to log out.')
+      toast.error(t('logOutFailed'))
     }
   }
 
@@ -35,9 +39,12 @@ export function UserMenu({ user }: { user: User | undefined }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem>
+        <DropdownMenuLabel>
           <ThemeToggle />
-        </DropdownMenuItem>
+        </DropdownMenuLabel>
+        <DropdownMenuLabel>
+          <LanguageToggle />
+        </DropdownMenuLabel>
         <DropdownMenuItem className="p-1 z-50">
           <form className="w-full" action={handleSignOut}>
             <button
@@ -45,7 +52,7 @@ export function UserMenu({ user }: { user: User | undefined }) {
               className="w-full text-left px-1 py-0.5 text-red-500 cursor-pointer"
               onClick={handleSignOut}
             >
-              Sign out
+              {t('signOut')}
             </button>
           </form>
         </DropdownMenuItem>
