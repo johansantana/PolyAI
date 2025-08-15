@@ -103,9 +103,9 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                 <FormItem>
                   <FormLabel className="flex justify-between">
                     <Label htmlFor="password">{t('password')}</Label>
-                    <a href="#" className="ml-auto text-sm underline-offset-4 hover:underline">
+                    {/* <a href="#" className="ml-auto text-sm underline-offset-4 hover:underline">
                       {t('forgotPassword')}
-                    </a>
+                    </a> */}
                   </FormLabel>
                   <FormControl>
                     <Input {...field} type="password" />

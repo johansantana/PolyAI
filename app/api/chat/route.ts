@@ -44,7 +44,6 @@ export async function POST(request: Request) {
         - DO NOT output lists.
         - after every tool call, pretend you're showing the result to the user and keep your response limited to a phrase.
         - today's date is ${new Date().toLocaleDateString()}.
-        - the user's IP address is ${ip}.
         - ask follow up questions to nudge user into the optimal flow.
         - ask for any details you don't know, etc.
         - If you receive unclear input or random text (e.g., "asdfgh"), respond politely asking for clarification instead of making assumptions or calling tools.
@@ -53,12 +52,12 @@ export async function POST(request: Request) {
 
         - Only use the 'use_tts' tool when you are required to send an audio to the user. For these type of requests you don't need to ask a question for confirmation. DO NOT use more than 90 words for these audios. DO NOT include any other text in the response (like the URL for example).
         - For the 'internet_search' tool you DO NOT need to provide all URLS that you find. You can provide the ones you find necessary only, if that is one, then you can send just one, if its two, then send those two. DO NOT send more then three URLS or search results.
-        - DO NOT ever ask the user for its location, you know the ip, you can just use the 'get_ip_info' tool to get the location from the ip.
         - When using the 'handle_place_search' you can determine the mode based on what the user is asking for, and place either 'search_nearby' or 'search_landmark'. The same goes with the limit, depending on how many locations you think the user needs you can alter this number. You can ask for more context on the location if you think its necessary, like the place is not descriptive enough, this way you don't mistakenly search for the wrong places with the same name.
         - When using the 'handle_place_search' you can also ask for the user to provide more context on the location if the query is not descriptive enough, this way you don't mistakenly search for the wrong places with the same name.
+        - When trying to use 'handle_place_search' in 'search_nearby' mode, you will have to get from the internet the location so you can pass it to the 'handle_search_place' function. For example: the user wants to know pizza places near them, you will need to ask for their city theyre located in, search the lat and lon for that city using 'interner_search' and then pass that info to 'handle_place_search'.
         - If the user ever asks to see something (place, or point of interest) in a map, you can just use the 'handle_place_search' too.
         - You should always pass the query to 'handle_place_search' in english first.
-        - If the user wants to know POI in a location he is not in currently, example "I want to know the best pizza places in New York City", just try to get a downtown New York Latitude and Longitude (dont need to ask the user this), and you will pass that as the user location when calling 'handle_search_place', along side with a query like "pizza restaurant" or something similar.
+        - If the user wants to know POI in a location, example "I want to know the best pizza places in New York City", just try to get a downtown New York Latitude and Longitude (dont need to ask the user this you can use 'internet_search'), and you will pass that as the location when calling 'handle_search_place', along side with a query like "pizza" or something similar.
         
         Sample appropriate responses:
           - For "hi": "Hello! How can I help you today?"
