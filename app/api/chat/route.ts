@@ -16,11 +16,6 @@ export async function POST(request: Request) {
 
   const url = new URL(process.env.MCP_SERVER_URL || '')
 
-  // Get IP address using external API
-  const ipResponse = await fetch('https://api.ipify.org?format=json')
-  const ipData = await ipResponse.json()
-  const ip = ipData.ip
-
   const mcpClient = await createMCPClient({
     transport: new StreamableHTTPClientTransport(url)
   })
